@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.navercorp.pinpoint</groupId>
+    <groupId>com.offsetexplorer.external</groupId>
     <artifactId>kafka-tools-skywalking</artifactId>
     <version>1.0-SNAPSHOT</version>
 
@@ -12,6 +12,94 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <skywalking.version>9.3.0</skywalking.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.skywalking</groupId>
+            <artifactId>apm-network</artifactId>
+            <version>${skywalking.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java-util</artifactId>
+            <version>3.21.1</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.offsetexplorer.external.SkyWalkingToJsonDecorator</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!--    <build>-->
+<!--        <plugins>-->
+<!--            &lt;!&ndash; 其他插件配置 &ndash;&gt;-->
+
+<!--            <plugin>-->
+<!--                <artifactId>maven-assembly-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <archive>-->
+<!--                        <manifest>-->
+<!--                            <mainClass>com.offsetexplorer.external.SkyWalkingToJsonDecorator</mainClass>-->
+<!--                        </manifest>-->
+<!--                    </archive>-->
+<!--                    <descriptorRefs>-->
+<!--                        <descriptorRef>jar-with-dependencies</descriptorRef>-->
+<!--                    </descriptorRefs>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>make-assembly</id> &lt;!&ndash; 这个名字可以随便取，但是要唯一 &ndash;&gt;-->
+<!--                        <phase>package</phase> &lt;!&ndash; 绑定到 package 生命周期阶段上 &ndash;&gt;-->
+<!--                        <goals>-->
+<!--                            <goal>single</goal> &lt;!&ndash; 只运行一次 &ndash;&gt;-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+
+<!--            &lt;!&ndash; 其他插件配置 &ndash;&gt;-->
+<!--        </plugins>-->
+<!--    </build>-->
+
+<!--    <build>-->
+<!--        <pluginManagement>-->
+<!--            <plugins>-->
+<!--                <plugin>-->
+<!--                    <groupId>org.apache.maven.plugins</groupId>-->
+<!--                    <artifactId>maven-jar-plugin</artifactId>-->
+<!--                    <configuration>-->
+<!--                        <archive>-->
+<!--                            <manifest>-->
+<!--                                <mainClass>com.offsetexplorer.external.SkyWalkingToJsonDecorator</mainClass>-->
+<!--                            </manifest>-->
+<!--                        </archive>-->
+<!--                    </configuration>-->
+<!--                </plugin>-->
+<!--            </plugins>-->
+<!--        </pluginManagement>-->
+<!--    </build>-->
 
 </project>
